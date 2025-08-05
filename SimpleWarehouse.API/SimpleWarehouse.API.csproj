@@ -10,12 +10,21 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.7"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SimpleWarehouse.Infrastructure\SimpleWarehouse.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
