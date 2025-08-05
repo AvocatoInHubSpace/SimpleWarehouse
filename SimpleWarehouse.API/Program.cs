@@ -6,13 +6,13 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+app.UseStaticFiles();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
-app.UseHttpsRedirection();
 
 var summaries = new[]
 {
@@ -32,6 +32,9 @@ app.MapGet("/weatherforecast", () =>
         return forecast;
     })
     .WithName("GetWeatherForecast");
+
+app.UseBlazorFrameworkFiles("/webassembly");
+app.MapFallbackToFile("/webassembly/{*path:nonfile}", "/webassembly/index.html");
 
 app.Run();
 
