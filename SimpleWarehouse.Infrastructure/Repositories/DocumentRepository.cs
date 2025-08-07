@@ -11,6 +11,7 @@ public class DocumentRepository(WarehouseDbContext context) : Repository, IDocum
     public async Task<Result<Document, RepositoryError>> GetAsync(Guid id)
     {
         return await TryFindAsync(() => context.Documents.AsNoTracking()
+            .Include(d => d.ResourceSupplies)
             .SingleOrDefaultAsync(d => d.Id == id));
     }
 
