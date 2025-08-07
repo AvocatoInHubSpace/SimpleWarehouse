@@ -8,4 +8,9 @@ public static class NotArchivedQueryExtension
     {
         return query.Where(x => !x.IsArchived);
     }
+    
+    public static IQueryable<T> Archived<T>(this IQueryable<T> query) where T : ArchivedEntity
+    {
+        return query.Where(x => x.IsArchived);
+    }
 }

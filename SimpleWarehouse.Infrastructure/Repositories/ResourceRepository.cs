@@ -16,6 +16,20 @@ public class ResourceRepository(WarehouseDbContext context) : Repository, IResou
             .FirstOrDefaultAsync(d => d.Id == id));
     }
 
+    public async Task<Result<IEnumerable<Resource>, RepositoryError>> GetAllAsync()
+    {
+        return await TryGetAsync<IEnumerable<Resource>>(async() => await context.Resources.AsNoTracking()
+            .NotArchived()
+            .ToListAsync());
+    }
+
+    public async Task<Result<IEnumerable<Resource>, RepositoryError>> GetAllArchivedAsync()
+    {
+        return await TryGetAsync<IEnumerable<Resource>>(async() => await context.Resources.AsNoTracking()
+            .Archived()
+            .ToListAsync());
+    }
+
     public async Task<Result<Resource, RepositoryError>> GetByUniqueNameAsync(string field)
     {
         return await TryFindAsync(async() =>

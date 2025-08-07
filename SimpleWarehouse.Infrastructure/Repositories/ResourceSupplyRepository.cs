@@ -14,6 +14,12 @@ public class ResourceSupplyRepository(WarehouseDbContext context) : Repository, 
             .FirstOrDefaultAsync(d => d.Id == id));
     }
 
+    public async Task<Result<IEnumerable<ResourceSupply>, RepositoryError>> GetAllAsync()
+    {
+        return await TryFindAsync<IEnumerable<ResourceSupply>>(async() => await context.ResourceSupplies.AsNoTracking()
+            .ToListAsync());
+    }
+
     public async Task<Result<RepositoryError>> AddAsync(ResourceSupply entity)
     {
         return await TryExecuteAsync(async () =>

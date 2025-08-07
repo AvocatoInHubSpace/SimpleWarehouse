@@ -16,6 +16,20 @@ public class MeasureUnitRepository(WarehouseDbContext context) : Repository, IMe
             .FirstOrDefaultAsync(d => d.Id == id));
     }
 
+    public async Task<Result<IEnumerable<MeasureUnit>, RepositoryError>> GetAllAsync()
+    {
+        return await TryGetAsync<IEnumerable<MeasureUnit>>(async() => await context.MeasureUnits.AsNoTracking()
+            .NotArchived()
+            .ToListAsync());
+    }
+
+    public async Task<Result<IEnumerable<MeasureUnit>, RepositoryError>> GetAllArchivedAsync()
+    {
+        return await TryGetAsync<IEnumerable<MeasureUnit>>(async() => await context.MeasureUnits.AsNoTracking()
+            .Archived()
+            .ToListAsync());
+    }
+
     public async Task<Result<MeasureUnit, RepositoryError>> GetByUniqueNameAsync(string name)
     {
         return await TryFindAsync(async() => await context.MeasureUnits
@@ -57,6 +71,7 @@ public class MeasureUnitRepository(WarehouseDbContext context) : Repository, IMe
         return await TryGetAsync(async ()
             => await context.ResourceSupplies.Where(x => x.MeasureUnitId == id).AnyAsync());
     }
+
 
     public async Task<Result<RepositoryError>> ArchiveAsync(Guid id)
     {

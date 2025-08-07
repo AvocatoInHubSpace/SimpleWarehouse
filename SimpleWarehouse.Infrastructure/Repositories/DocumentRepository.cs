@@ -10,14 +10,21 @@ public class DocumentRepository(WarehouseDbContext context) : Repository, IDocum
 {
     public async Task<Result<Document, RepositoryError>> GetAsync(Guid id)
     {
-        return await TryFindAsync(() => context.Documents.AsNoTracking()
+        return await TryFindAsync(async () => await context.Documents.AsNoTracking()
             .Include(d => d.ResourceSupplies)
             .SingleOrDefaultAsync(d => d.Id == id));
     }
 
+    public async Task<Result<IEnumerable<Document>, RepositoryError>> GetAllAsync()
+    {
+        return await TryGetAsync<IEnumerable<Document>>(async () => await context.Documents.AsNoTracking()
+            .Include(d => d.ResourceSupplies)
+            .ToListAsync());
+    }
+
     public async Task<Result<Document, RepositoryError>> GetByUniqueNameAsync(string number)
     {
-        return await TryFindAsync(() => context.Documents.AsNoTracking()
+        return await TryFindAsync(async () => await context.Documents.AsNoTracking()
             .SingleOrDefaultAsync(d => d.Number == number));
     }
 
