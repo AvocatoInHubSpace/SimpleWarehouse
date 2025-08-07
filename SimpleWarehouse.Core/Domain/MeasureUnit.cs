@@ -2,6 +2,6 @@
 
 public class MeasureUnit : ArchivedEntity
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
     public required string Name { get; init; }
 }

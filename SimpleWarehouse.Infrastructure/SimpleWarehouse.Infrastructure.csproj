@@ -7,10 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Repositories\" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\SimpleWarehouse.Application\SimpleWarehouse.Application.csproj" />
       <ProjectReference Include="..\SimpleWarehouse.Core\SimpleWarehouse.Core.csproj" />
     </ItemGroup>
 

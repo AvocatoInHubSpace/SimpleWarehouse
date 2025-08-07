@@ -2,5 +2,5 @@
 
 public class ArchivedEntity
 {
-    public bool IsArchived { get; init; } = false;
+    public bool IsArchived { get; set; } = false;
 }

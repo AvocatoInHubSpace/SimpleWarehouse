@@ -5,10 +5,10 @@ namespace SimpleWarehouse.Infrastructure.Data;
 
 public class WarehouseDbContext(DbContextOptions<WarehouseDbContext> options) : DbContext(options)
 {
-    DbSet<MeasureUnit> MeasureUnits { get; set; }
-    DbSet<Resource> Resources { get; set; }
-    DbSet<ResourceSupply> ResourceSupplies { get; set; }
-    DbSet<Document> Documents { get; set; }
+    public DbSet<MeasureUnit> MeasureUnits { get; set; }
+    public DbSet<Resource> Resources { get; set; }
+    public DbSet<ResourceSupply> ResourceSupplies { get; set; }
+    public DbSet<Document> Documents { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
