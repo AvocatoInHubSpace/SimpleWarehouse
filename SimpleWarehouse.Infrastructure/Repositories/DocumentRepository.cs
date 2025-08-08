@@ -8,49 +8,54 @@ namespace SimpleWarehouse.Infrastructure.Repositories;
 
 public class DocumentRepository(WarehouseDbContext context) : Repository, IDocumentRepository
 {
-    public async Task<Result<Document, RepositoryError>> GetAsync(Guid id)
+    public async Task<Result<Document, RepositoryError>> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         return await TryFindAsync(async () => await context.Documents.AsNoTracking()
             .Include(d => d.ResourceSupplies)
-            .SingleOrDefaultAsync(d => d.Id == id));
+            .SingleOrDefaultAsync(d => d.Id == id, cancellationToken: cancellationToken));
     }
 
-    public async Task<Result<IEnumerable<Document>, RepositoryError>> GetAllAsync()
+    public async Task<Result<IEnumerable<Document>, RepositoryError>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await TryGetAsync<IEnumerable<Document>>(async () => await context.Documents.AsNoTracking()
             .Include(d => d.ResourceSupplies)
-            .ToListAsync());
+            .ToListAsync(cancellationToken: cancellationToken));
     }
 
-    public async Task<Result<Document, RepositoryError>> GetByUniqueNameAsync(string number)
+    public async Task<Result<bool, RepositoryError>> CheckUniqueNameAsync(string number, CancellationToken cancellationToken)
     {
-        return await TryFindAsync(async () => await context.Documents.AsNoTracking()
-            .SingleOrDefaultAsync(d => d.Number == number));
+        return await TryGetAsync<bool>(async() =>
+        {
+            var exists = await context.Documents
+                .AsNoTracking()
+                .AnyAsync(x => x.Number == number, cancellationToken: cancellationToken);
+            return !exists;
+        });
     }
 
-    public async Task<Result<RepositoryError>> AddAsync(Document entity)
+    public async Task<Result<RepositoryError>> AddAsync(Document entity, CancellationToken cancellationToken)
     {
         return await TryExecuteAsync(async () =>
         {
             context.Documents.Add(entity);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
         });
     }
 
-    public async Task<Result<RepositoryError>> DeleteAsync(Guid id)
+    public async Task<Result<RepositoryError>> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         return await TryExecuteAsync(async () =>
         {
-            await context.Documents.Where(d => d.Id == id).ExecuteDeleteAsync();
+            await context.Documents.Where(d => d.Id == id).ExecuteDeleteAsync(cancellationToken: cancellationToken);
         });
     }
 
-    public async Task<Result<RepositoryError>> UpdateAsync(Document entity)
+    public async Task<Result<RepositoryError>> UpdateAsync(Document entity, CancellationToken cancellationToken)
     {
         return await TryExecuteAsync(async () =>
         {
             context.Documents.Update(entity);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
         });
     }
 }

@@ -2,6 +2,6 @@
 
 namespace SimpleWarehouse.Application.Interfaces.Repositories;
 
-public interface IDocumentRepository : IRepository<Document>, IUniqueNameRepository<Document>
+public interface IDocumentRepository : IRepository<Document>, IUniqueNameRepository
 {
 }

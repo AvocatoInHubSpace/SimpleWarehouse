@@ -2,5 +2,5 @@
 
 public interface IEntityUsageRepository<T>
 {
-    Task<Result<bool, RepositoryError>> IsInUseAsync(Guid id);
+    Task<Result<bool, RepositoryError>> IsInUseAsync(Guid id, CancellationToken cancellationToken = default);
 }

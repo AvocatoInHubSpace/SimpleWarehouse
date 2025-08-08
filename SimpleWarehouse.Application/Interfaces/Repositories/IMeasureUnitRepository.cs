@@ -2,7 +2,7 @@
 
 namespace SimpleWarehouse.Application.Interfaces.Repositories;
 
-public interface IMeasureUnitRepository : IArchivedRepository<MeasureUnit>, IRepository<MeasureUnit>, IUniqueNameRepository<MeasureUnit>,
+public interface IMeasureUnitRepository : IArchivedRepository<MeasureUnit>, IRepository<MeasureUnit>, IUniqueNameRepository,
     IEntityUsageRepository<Resource>
 {
 

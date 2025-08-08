@@ -1,6 +1,6 @@
 ﻿namespace SimpleWarehouse.Application.Interfaces.Repositories;
 
-public interface IUniqueNameRepository<T>
+public interface IUniqueNameRepository
 {
-    Task<Result<T, RepositoryError>> GetByUniqueNameAsync(string field);
+    Task<Result<bool, RepositoryError>> CheckUniqueNameAsync(string name, CancellationToken cancellationToken = default);
 }

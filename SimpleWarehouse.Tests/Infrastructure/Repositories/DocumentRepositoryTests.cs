@@ -27,7 +27,7 @@ public class DocumentRepositoryTests
         var repository = await CreateRepositoryAsync();
 
         // Act
-        var documentResult = await repository.GetAsync(_idList[0]);
+        var documentResult = await repository.GetAsync(_idList[0], CancellationToken.None);
 
         // Assert
         Assert.True(documentResult.IsSuccess);
@@ -42,7 +42,7 @@ public class DocumentRepositoryTests
         var repository = await CreateRepositoryAsync();
 
         // Act
-        var documentResult = await repository.GetAllAsync();
+        var documentResult = await repository.GetAllAsync(CancellationToken.None);
 
         // Assert
         Assert.True(documentResult.IsSuccess);
@@ -61,7 +61,7 @@ public class DocumentRepositoryTests
         var repository = await CreateRepositoryAsync();
 
         // Act
-        var documentResult = await repository.GetAsync(Guid.NewGuid());
+        var documentResult = await repository.GetAsync(Guid.NewGuid(), CancellationToken.None);
 
         // Assert
         Assert.False(documentResult.IsSuccess);
@@ -82,7 +82,7 @@ public class DocumentRepositoryTests
         };
 
         // Act
-        var documentResult = await repository.AddAsync(document);
+        var documentResult = await repository.AddAsync(document, CancellationToken.None);
 
         // Assert
         Assert.True(documentResult.IsSuccess);
@@ -96,8 +96,8 @@ public class DocumentRepositoryTests
         var repository = await CreateRepositoryAsync();
 
         // Act
-        var documentResult = await repository.DeleteAsync(_idList[0]);
-        var getDocumentResult = await repository.GetAsync(_idList[0]);
+        var documentResult = await repository.DeleteAsync(_idList[0], CancellationToken.None);
+        var getDocumentResult = await repository.GetAsync(_idList[0], CancellationToken.None);
 
         // Assert
         Assert.True(documentResult.IsSuccess);
@@ -119,8 +119,8 @@ public class DocumentRepositoryTests
         };
         
         // Act
-        var documentResult = await repository.UpdateAsync(document);
-        var getDocumentResult = await repository.GetAsync(document.Id);
+        var documentResult = await repository.UpdateAsync(document, CancellationToken.None);
+        var getDocumentResult = await repository.GetAsync(document.Id, CancellationToken.None);
 
         // Assert
         Assert.True(documentResult.IsSuccess);
@@ -130,17 +130,18 @@ public class DocumentRepositoryTests
     }
 
     [Fact]
-    public async Task GetByUniqueNameAsync_ShouldSuccess_WhenDocumentExists()
+    public async Task CheckUniqueNameAsync_ShouldSuccess_WhenDocumentExists()
     {
         // Arrange
         var repository = await CreateRepositoryAsync();
         
         // Act
-        var documentResult = await repository.GetByUniqueNameAsync(_idList[0].ToString());
-        var getDocumentResult = await repository.GetAsync(_idList[0]);
+        var documentResult = await repository.CheckUniqueNameAsync(_idList[0].ToString(), CancellationToken.None);
+        var getDocumentResult = await repository.GetAsync(_idList[0], CancellationToken.None);
 
         // Assert
         Assert.True(documentResult.IsSuccess);
+        Assert.False(documentResult.Value);
         Assert.True(getDocumentResult.IsSuccess);
         Assert.Equal(getDocumentResult.Value!.Number, getDocumentResult.Value!.Number);
         Assert.Equal(getDocumentResult.Value!.Date, getDocumentResult.Value!.Date);
@@ -165,9 +166,9 @@ public class DocumentRepositoryTests
                 Date = DateTime.Now,
                 ResourceSupplies = []
             };
-            await context.Documents.AddAsync(document);
+            await context.Documents.AddAsync(document, CancellationToken.None);
         }
         
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(CancellationToken.None);
     }
 }
