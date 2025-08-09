@@ -67,6 +67,7 @@ public class DocumentRepositoryTests
         Assert.False(documentResult.IsSuccess);
         Assert.Null(documentResult.Value);
     }
+    
 
     [Fact]
     public async Task AddAsync_ShouldSuccess_WhenDocumentNotExists()
@@ -77,7 +78,7 @@ public class DocumentRepositoryTests
         {
             Id = Guid.NewGuid(),
             Number = Guid.NewGuid().ToString(),
-            Date = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             ResourceSupplies = []
         };
 
@@ -114,7 +115,7 @@ public class DocumentRepositoryTests
         {
             Id = _idList[0],
             Number = Guid.NewGuid().ToString(),
-            Date = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             ResourceSupplies = []
         };
         
@@ -163,7 +164,7 @@ public class DocumentRepositoryTests
             {
                 Id = t,
                 Number = t.ToString(),
-                Date = DateTime.Now,
+                Date = DateOnly.FromDateTime(DateTime.Now),
                 ResourceSupplies = []
             };
             await context.Documents.AddAsync(document, CancellationToken.None);
